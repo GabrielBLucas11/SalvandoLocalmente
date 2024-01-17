@@ -1,20 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, SafeAreaView, StatusBar, StyleSheet } from "react-native"
+import NotaEditor from "./src/components/NotaEditor"
+import { useEffect, useState } from "react"
+import { Nota } from "./src/components/Nota"
+import { buscaNotas, criaTabela } from "./src/services/notas"
 
 export default function App() {
+  useEffect(() => {
+    criaTabela()
+    mostraNotas()  
+  }, [])
+
+  const [notas, setNotas] = useState([])
+  const[notaSelecionada, setNotaSelecionada] = useState({})
+  
+  async function mostraNotas() {
+    const todasNotas = await buscaNotas()
+    setNotas(todasNotas)
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <SafeAreaView style={estilos.container}>
+      <FlatList 
+        data={notas}
+        renderItem={(nota) => <Nota {...nota} setNotaSelecionada={setNotaSelecionada}/>}
+        keyExtractor={nota => nota.id}
+      />
+      <NotaEditor mostraNotas={mostraNotas} notaSelecionada={notaSelecionada} setNotaSelecionada={setNotaSelecionada}/>
+      <StatusBar/>
+    </SafeAreaView>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const estilos = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: "stretch",
+		justifyContent: "flex-start",
+	},
+})
+
