@@ -21,10 +21,13 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gabrielbl79.SalvandoLocalmente"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "extra": {
+      "eas": {
+        "projectId": "d2b0a256-c123-4e98-aa05-1a3ec175c0c3"
+      }
     }
   }
 }
